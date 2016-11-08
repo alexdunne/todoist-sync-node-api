@@ -10,7 +10,7 @@ let commandQueue;
 let commandCreator;
 let client;
 
-describe('API items resource', function() {
+describe('API projects resource', () => {
   before(function() {
     commandQueue = CommandQueue();
     commandCreator = CommandCreator();
@@ -18,14 +18,14 @@ describe('API items resource', function() {
     client = Client(api, commandCreator);
   });
 
-  it('Creates with content "Tester"', function() {
+  it('Creates add project command with name "Test project"', function() {
     const queue = commandQueue.getQueue();
     assert.ok(queue.length === 0);
 
-    client.items.create('Tester');
+    client.projects.create('Tester project');
 
     const updatedQueue = commandQueue.getQueue();
     assert.ok(updatedQueue.length === 1);
-    assert.ok(updatedQueue[0].type === 'item_add');
+    assert.ok(updatedQueue[0].type === 'project_add');
   });
 });

@@ -1,15 +1,21 @@
 import assert from 'assert';
 
-import ApiInterface from '../lib/apiInterface';
+import Api from '../lib/api';
+import CommandCreator from '../lib/commandCreator';
+import CommandQueue from '../lib/commandQueue';
 import Client from '../lib/client';
 
 let api;
+let commandQueue;
+let commandCreator;
 let client;
 
 describe('Todoist API client', () => {
   before(function() {
-    api = ApiInterface();
-    client = Client(api);
+    commandQueue = CommandQueue();
+    commandCreator = CommandCreator();
+    api = Api(commandQueue);
+    client = Client(api, commandCreator);
   });
 
   it('Has sync method', function() {
@@ -20,13 +26,19 @@ describe('Todoist API client', () => {
     assert.ok(client.sync() instanceof Promise);
   });
 
-  it('Calls the Sync API for a full sync request', function(done) {
-    client
-      .sync()
-      .then(res => {
-        console.log('done');
-      })
-      .then(done)
-      .catch(done)
+  it('Has commit method', function() {
+    assert.ok(client.hasOwnProperty('commit'));
+  });
+
+  it('Returns a promise when calling commit', function() {
+    assert.ok(client.commit() instanceof Promise);
+  });
+
+  it('Has items method', function() {
+    assert.ok(client.hasOwnProperty('items'));
+  });
+
+  it('Has projects method', function() {
+    assert.ok(client.hasOwnProperty('projects'));
   });
 });

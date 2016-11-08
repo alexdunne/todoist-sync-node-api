@@ -1,0 +1,1 @@
+- Reads are always done using a incrememntal sync.

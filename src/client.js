@@ -1,11 +1,21 @@
-import Sync from './resources/sync';
-
-// Import any resources
 import Items from './resources/items';
+import Projects from './resources/projects';
 
-const Client = (api) => {
+/**
+ * Top level interface to each of the resouces and the 
+ * generic sync call
+ * 
+ * @param {ApiInterface} api
+ * @param {CommandCreator} commandCreator
+ */
+const Client = (api, commandCreator) => {
   return {
-    sync: Sync(api).syncRequest
+    commit: api.commit,
+    sync: api.sync,
+
+    // Attach the resources
+    items: Items(api, commandCreator),
+    projects: Projects(api, commandCreator),
   }
 };
 
