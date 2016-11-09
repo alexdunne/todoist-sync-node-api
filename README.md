@@ -1,5 +1,7 @@
-# Todoist sync node api
-A wrapper around the [todoist sync api](https://developer.todoist.com/?shell#api-overview) written in Javascript.
+# Todoist Sync Node Api
+[![Build Status](https://travis-ci.org/alexdunne/todoist-sync-node-api.svg?branch=master)](https://travis-ci.org/alexdunne/todoist-sync-node-api)
+
+A wrapper around the [Todoist Sync Api](https://developer.todoist.com/?shell#api-overview) written in Javascript.
 
 When a method on a resource is called (e.g. projects, items) a command is created and added to a queue. The send these commands to the Todist Sync API the commit method must be called.
 
