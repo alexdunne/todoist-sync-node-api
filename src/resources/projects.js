@@ -15,10 +15,10 @@ const Projects = (api, commandCreator) => {
    * Creates a project command from details provided.
    * Queues the command using the API
    * Returns the temp_id of the command so that the project can be used elsewhere
-   * 
+   *
    * @param {String} name
    * @param {Object} params
-   * 
+   *
    * @returns {String} The temp_id of the command created
    */
   const create = (name, params = {}) => {
@@ -31,10 +31,10 @@ const Projects = (api, commandCreator) => {
   };
 
   /**
-   * 
+   *
    * @param {Number} id
    * @param {Object} params
-   * 
+   *
    * @returns {String} The temp_id of the command created
    */
   const update = (id, params = {}) => {
@@ -47,16 +47,14 @@ const Projects = (api, commandCreator) => {
   };
 
   /**
-   * 
+   *
    * @param {Number|Number[]} id
-   * 
+   *
    * @returns {String} The temp_id of the command created
    */
   const remove = (ids) => {
     // API requires that the ids field is an array
-    if (!Array.isArray(ids)) {
-      ids = [ids];
-    }
+    ids = wrapWithArray(ids);
 
     const command = commandCreator.create(actionTypes.PROJECT_DELETE, {
       ids: ids
@@ -68,16 +66,14 @@ const Projects = (api, commandCreator) => {
   };
 
   /**
-   * 
+   *
    * @param {Number|Number[]} id
-   * 
+   *
    * @returns {String} The temp_id of the command created
    */
   const archive = (ids) => {
     // API requires that the ids field is an array
-    if (!Array.isArray(ids)) {
-      ids = [ids];
-    }
+    ids = wrapWithArray(ids);
 
     const command = commandCreator.create(actionTypes.PROJECT_ARCHIVE, {
       ids: ids
@@ -89,16 +85,14 @@ const Projects = (api, commandCreator) => {
   };
 
   /**
-   * 
+   *
    * @param {Number|Number[]} id
-   * 
+   *
    * @returns {String} The temp_id of the command created
    */
   const unarchive = (ids) => {
     // API requires that the ids field is an array
-    if (!Array.isArray(ids)) {
-      ids = [ids];
-    }
+    ids = wrapWithArray(ids);
 
     const command = commandCreator.create(actionTypes.PROJECT_UNARCHIVE, {
       ids: ids
@@ -107,6 +101,14 @@ const Projects = (api, commandCreator) => {
     api.queueCommand(command);
 
     return command.temp_id;
+  };
+
+  /**
+   * If the given value is not already an array wrap it in one
+   * @param {any} val The value to be wrapped
+   */
+  const wrapWithArray = val => {
+    return !Array.isArray(val) ? [val] : val;
   };
 
   return {
