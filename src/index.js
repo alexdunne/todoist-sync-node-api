@@ -1,4 +1,6 @@
-if (!global._babelPolyfill) { require('babel-polyfill'); }
+if (!global._babelPolyfill) {
+  require('babel-polyfill');
+}
 
 import Api from './api';
 import CommandCreator from './commandCreator';

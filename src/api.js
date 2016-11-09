@@ -2,26 +2,37 @@ import request from 'request';
 require('request-to-curl');
 
 /**
- * A HTTP wrapper around the sync API which preforms POST requests to the api route given.
- * 
+ * A HTTP wrapper around the sync API which preforms
+ * POST requests to the api route given.
+ *
  * @param {CommandQueue} queue
+ * @param {Object} params Any additional parameters
+ *
+ * @return {Object} The api interface
  */
 const Api = (queue, params = {}) => {
   const options = Object.assign({
     baseUrl: 'https://todoist.com/API/v7/sync',
     token: process.env.TODOIST_OAUTH_TOKEN,
     sync_token: '*',
-    resource_types: '["all"]'
+    resource_types: '["all"]',
   }, params);
 
-  const queueCommand = command => {
+  /**
+   * Added a command to the quue to be commited
+   *
+   * @param {Object} command The command to be queued
+   *
+   * @return {undefined}
+   */
+  const queueCommand = (command) => {
     queue.add(command);
   };
 
   /**
    * Creates a single request using the commands in the queue.
-   * 
-   * @returns {Promise}
+   *
+   * @return {Promise} Includes the response from the commit request
    */
   const commit = () => {
     const response = post(getUrl(), getCommandRequestData());
@@ -31,22 +42,22 @@ const Api = (queue, params = {}) => {
 
   /**
    * Preforms a sync request to fetch data from the endpoint
-   * 
-   * @returns {Promise}
+   *
+   * @return {Promise} Any new data from the Sync API relative to the sync_token
    */
   const sync = () => {
     return post(
-      getUrl(), { 
+      getUrl(), {
         resource_types: options.resource_types,
         token: options.token,
         sync_token: options.sync_token,
       }
-    )
+    );
   };
 
   const post = (url, data) => {
-    const params = { url: url, form: data };
-    
+    const params = {url: url, form: data};
+
     return new Promise((resolve, reject) => {
       request.post(params, (err, res, payload) => {
         if (err) {

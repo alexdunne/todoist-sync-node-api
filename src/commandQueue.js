@@ -1,7 +1,7 @@
 const CommandQueue = () => {
   let queue = [];
 
-  const add = cmd => {
+  const add = (cmd) => {
     queue.push(cmd);
   };
 
@@ -16,7 +16,7 @@ const CommandQueue = () => {
   return {
     add: add,
     clear: clear,
-    getQueue: getQueue
+    getQueue: getQueue,
   };
 };
 
