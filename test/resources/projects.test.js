@@ -18,14 +18,20 @@ describe('API projects resource', () => {
     client = Client(api, commandCreator);
   });
 
-  it('Creates add project command with name "Test project"', function() {
+  it('Creates with name "Test project"', function() {
     const queue = commandQueue.getQueue();
     assert.ok(queue.length === 0);
 
     client.projects.create('Tester project');
 
+    // Ensure the command has been queued
     const updatedQueue = commandQueue.getQueue();
     assert.ok(updatedQueue.length === 1);
-    assert.ok(updatedQueue[0].type === 'project_add');
+
+    // Ensure the command has the required fields
+    const command = updatedQueue[0];
+    assert.ok(command.type === 'project_add');
+    assert.ok(command.hasOwnProperty('args'));
+    assert.ok(command.args.hasOwnProperty('name'));
   });
 });

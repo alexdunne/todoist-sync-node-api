@@ -18,14 +18,21 @@ describe('API items resource', function() {
     client = Client(api, commandCreator);
   });
 
-  it('Creates with content "Tester"', function() {
+  it('Creates with content "Test"', function() {
     const queue = commandQueue.getQueue();
     assert.ok(queue.length === 0);
 
-    client.items.create('Tester');
+    client.items.create('Test');
 
+    // Ensure the command has been queued
     const updatedQueue = commandQueue.getQueue();
     assert.ok(updatedQueue.length === 1);
-    assert.ok(updatedQueue[0].type === 'item_add');
+
+    // Ensure the command has the required fields
+    const command = updatedQueue[0];
+    assert.ok(command.type === 'item_add');
+    assert.ok(command.hasOwnProperty('args'));
+    assert.ok(command.args.hasOwnProperty('content'));
+
   });
 });
