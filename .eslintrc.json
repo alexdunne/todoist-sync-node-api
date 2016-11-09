@@ -5,7 +5,7 @@
         "sourceType": "module"
     },
     "rules": {
-        "camelcase": ["error", {"properties": "never"}],
-        "new-cap": ["error", { "capIsNew": false }]
+        "camelcase": [2, {"properties": "never"}],
+        "new-cap": [2, { "capIsNew": false }]
     }
 }
