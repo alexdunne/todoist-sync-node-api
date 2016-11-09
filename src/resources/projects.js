@@ -7,6 +7,8 @@ const Projects = (api, commandCreator) => {
     PROJECT_ADD: 'project_add',
     PROJECT_UPDATE: 'project_update',
     PROJECT_DELETE: 'project_delete',
+    PROJECT_ARCHIVE: 'project_archive',
+    PROJECT_UNARCHIVE: 'project_unarchive',
   };
 
   /**
@@ -65,10 +67,54 @@ const Projects = (api, commandCreator) => {
     return command.temp_id;
   };
 
+  /**
+   * 
+   * @param {Number|Number[]} id
+   * 
+   * @returns {String} The temp_id of the command created
+   */
+  const archive = (ids) => {
+    // API requires that the ids field is an array
+    if (!Array.isArray(ids)) {
+      ids = [ids];
+    }
+
+    const command = commandCreator.create(actionTypes.PROJECT_ARCHIVE, {
+      ids: ids
+    });
+
+    api.queueCommand(command);
+
+    return command.temp_id;
+  };
+
+  /**
+   * 
+   * @param {Number|Number[]} id
+   * 
+   * @returns {String} The temp_id of the command created
+   */
+  const unarchive = (ids) => {
+    // API requires that the ids field is an array
+    if (!Array.isArray(ids)) {
+      ids = [ids];
+    }
+
+    const command = commandCreator.create(actionTypes.PROJECT_UNARCHIVE, {
+      ids: ids
+    });
+
+    api.queueCommand(command);
+
+    return command.temp_id;
+  };
+
   return {
     create: create,
     update: update,
     remove: remove,
+    archive: archive,
+    unarchive: unarchive,
   };
 };
 

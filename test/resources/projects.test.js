@@ -106,4 +106,94 @@ describe('API projects resource', () => {
     assert.ok(removeCommand.args.ids[0] === projectIds[0]);
     assert.ok(removeCommand.args.ids[1] === projectIds[1]);
   });
+
+  it('Archives a single project', function() {
+    const queue = commandQueue.getQueue();
+    assert.ok(queue.length === 0);
+
+    const id = client.projects.create('Test project');
+
+    client.projects.archive(id);
+
+    // Ensure the command has been queued
+    const updatedQueue = commandQueue.getQueue();
+    assert.ok(updatedQueue.length === 2);
+
+    const archiveCommand = updatedQueue[1];
+    assert.ok(archiveCommand.type === 'project_archive');
+    assert.ok(archiveCommand.hasOwnProperty('args'));
+    assert.ok(archiveCommand.args.hasOwnProperty('ids'));
+    assert.ok(archiveCommand.args.ids.length === 1);
+    assert.ok(archiveCommand.args.ids[0] === id);
+  });
+
+  it('Archives multiple projects', function() {
+    const queue = commandQueue.getQueue();
+    assert.ok(queue.length === 0);
+
+    let projectIds = [];
+
+    projectIds.push(client.projects.create('First project'));
+    projectIds.push(client.projects.create('Second project'));
+
+    client.projects.archive(projectIds);
+
+    // Ensure the command has been queued
+    const updatedQueue = commandQueue.getQueue();
+    assert.ok(updatedQueue.length === 3);
+
+    const archiveCommand = updatedQueue[2];
+    assert.ok(archiveCommand.type === 'project_archive');
+    assert.ok(archiveCommand.hasOwnProperty('args'));
+    assert.ok(archiveCommand.args.hasOwnProperty('ids'));
+    assert.ok(archiveCommand.args.ids.length === 2);
+    assert.ok(archiveCommand.args.ids[0] === projectIds[0]);
+    assert.ok(archiveCommand.args.ids[1] === projectIds[1]);
+  });
+
+  it('Unarchives a single project', function() {
+    const queue = commandQueue.getQueue();
+    assert.ok(queue.length === 0);
+
+    const id = client.projects.create('Test project');
+
+    client.projects.archive(id);
+    client.projects.unarchive(id);
+
+    // Ensure the command has been queued
+    const updatedQueue = commandQueue.getQueue();
+    assert.ok(updatedQueue.length === 3);
+
+    const unarchivedCommand = updatedQueue[2];
+    assert.ok(unarchivedCommand.type === 'project_unarchive');
+    assert.ok(unarchivedCommand.hasOwnProperty('args'));
+    assert.ok(unarchivedCommand.args.hasOwnProperty('ids'));
+    assert.ok(unarchivedCommand.args.ids.length === 1);
+    assert.ok(unarchivedCommand.args.ids[0] === id);
+  });
+
+  it('Unarchives multiple projects', function(done) {
+    const queue = commandQueue.getQueue();
+    assert.ok(queue.length === 0);
+
+    let projectIds = [];
+
+    projectIds.push(client.projects.create('First project'));
+    projectIds.push(client.projects.create('Second project'));
+
+    client.projects.archive(projectIds);
+    client.projects.unarchive(projectIds);
+
+    // Ensure the command has been queued
+    const updatedQueue = commandQueue.getQueue();
+    assert.ok(updatedQueue.length === 4);
+
+    const unarchivedCommand = updatedQueue[3];
+    assert.ok(unarchivedCommand.type === 'project_unarchive');
+    assert.ok(unarchivedCommand.hasOwnProperty('args'));
+    assert.ok(unarchivedCommand.args.hasOwnProperty('ids'));
+    assert.ok(unarchivedCommand.args.ids.length === 2);
+    assert.ok(unarchivedCommand.args.ids[0] === projectIds[0]);
+    assert.ok(unarchivedCommand.args.ids[1] === projectIds[1]);
+  });
 });
