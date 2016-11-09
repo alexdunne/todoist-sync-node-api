@@ -6,6 +6,7 @@ const Projects = (api, commandCreator) => {
   const actionTypes = {
     PROJECT_ADD: 'project_add',
     PROJECT_UPDATE: 'project_update',
+    PROJECT_DELETE: 'project_delete',
   };
 
   /**
@@ -43,9 +44,31 @@ const Projects = (api, commandCreator) => {
     return command.temp_id;
   };
 
+  /**
+   * 
+   * @param {Number|Number[]} id
+   * 
+   * @returns {String} The temp_id of the command created
+   */
+  const remove = (ids) => {
+    // API requires that the ids field is an array
+    if (!Array.isArray(ids)) {
+      ids = [ids];
+    }
+
+    const command = commandCreator.create(actionTypes.PROJECT_DELETE, {
+      ids: ids
+    });
+
+    api.queueCommand(command);
+
+    return command.temp_id;
+  };
+
   return {
     create: create,
     update: update,
+    remove: remove,
   };
 };
 
