@@ -9,7 +9,7 @@ require('request-to-curl');
 const Api = (queue, params = {}) => {
   const options = Object.assign({
     baseUrl: 'https://todoist.com/API/v7/sync',
-    token: '57a66d45a022897b3270af21546707efcaf8af69',
+    token: process.env.TODOIST_OAUTH_TOKEN,
     sync_token: '*',
     resource_types: '["all"]'
   }, params);

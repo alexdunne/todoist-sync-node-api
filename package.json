@@ -1,5 +1,5 @@
 {
-  "name": "todoist-node-api",
+  "name": "todoist-sync-node-api",
   "description": "A node wrapper for the todoist sync API",
   "version": "0.1.0",
   "keywords": [
@@ -27,6 +27,6 @@
     "mocha": "mocha --opts mocha.opts || exit 0",
     "test": "npm run compile && nsp check && npm run mocha"
   },
-  "author": "",
+  "author": "Alex Dunne",
   "license": "MIT"
 }

@@ -172,7 +172,7 @@ describe('API projects resource', () => {
     assert.ok(unarchivedCommand.args.ids[0] === id);
   });
 
-  it('Unarchives multiple projects', function(done) {
+  it('Unarchives multiple projects', function() {
     const queue = commandQueue.getQueue();
     assert.ok(queue.length === 0);
 
