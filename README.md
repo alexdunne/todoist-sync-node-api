@@ -13,6 +13,7 @@ Currently supported features:
 - [x] Items
 
 Upcoming features:
+- [ ] OAuth - Free
 - [ ] User - Free
 - [ ] Sharing - Free
 - [ ] Labels - Premium
