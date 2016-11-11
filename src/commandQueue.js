@@ -1,3 +1,9 @@
+/**
+ * The command queue is not so much a queue but more so an array with
+ * a reduced interface.
+ *
+ * @return {Object} The command queue interface.
+ */
 const CommandQueue = () => {
   let queue = [];
 

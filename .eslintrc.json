@@ -2,7 +2,10 @@
     "extends": "google",
     "parserOptions": {
         "ecmaVersion": 6,
-        "sourceType": "module"
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true
+        }
     },
     "rules": {
         "camelcase": [2, {"properties": "never"}],

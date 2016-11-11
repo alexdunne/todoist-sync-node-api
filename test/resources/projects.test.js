@@ -4,18 +4,21 @@ import Api from '../../lib/api';
 import CommandCreator from '../../lib/commandCreator';
 import CommandQueue from '../../lib/commandQueue';
 import Client from '../../lib/client';
+import ResourceHelper from '../../lib/resources/resourceHelper';
 
 let api;
 let commandQueue;
 let commandCreator;
+let resourceHelper;
 let client;
 
-describe('API projects resource', () => {
+describe('Todoist API projects resource', () => {
   before(function() {
     commandQueue = CommandQueue();
-    commandCreator = CommandCreator();
     api = Api(commandQueue);
-    client = Client(api, commandCreator);
+    commandCreator = CommandCreator();
+    resourceHelper = ResourceHelper(api, commandCreator);
+    client = Client(api,  resourceHelper);
   });
 
   beforeEach(function() {
@@ -44,7 +47,7 @@ describe('API projects resource', () => {
     const queue = commandQueue.getQueue();
     assert.ok(queue.length === 0);
 
-    const id = client.projects.create('Test project');
+    const id = 1;
 
     client.projects.update(id, {
       name: 'Updated project',
@@ -52,9 +55,9 @@ describe('API projects resource', () => {
 
     // Ensure the command has been queued
     const updatedQueue = commandQueue.getQueue();
-    assert.ok(updatedQueue.length === 2);
+    assert.ok(updatedQueue.length === 1);
 
-    const updateCommand = updatedQueue[1];
+    const updateCommand = updatedQueue[0];
     assert.ok(updateCommand.type === 'project_update');
     assert.ok(updateCommand.hasOwnProperty('args'));
     assert.ok(updateCommand.args.hasOwnProperty('id'));
@@ -67,15 +70,15 @@ describe('API projects resource', () => {
     const queue = commandQueue.getQueue();
     assert.ok(queue.length === 0);
 
-    const id = client.projects.create('Test project');
+    const id = 1;
 
     client.projects.remove(id);
 
     // Ensure the command has been queued
     const updatedQueue = commandQueue.getQueue();
-    assert.ok(updatedQueue.length === 2);
+    assert.ok(updatedQueue.length === 1);
 
-    const removeCommand = updatedQueue[1];
+    const removeCommand = updatedQueue[0];
     assert.ok(removeCommand.type === 'project_delete');
     assert.ok(removeCommand.hasOwnProperty('args'));
     assert.ok(removeCommand.args.hasOwnProperty('ids'));
@@ -89,16 +92,16 @@ describe('API projects resource', () => {
 
     let projectIds = [];
 
-    projectIds.push(client.projects.create('First project'));
-    projectIds.push(client.projects.create('Second project'));
+    projectIds.push(1);
+    projectIds.push(2);
 
     client.projects.remove(projectIds);
 
     // Ensure the command has been queued
     const updatedQueue = commandQueue.getQueue();
-    assert.ok(updatedQueue.length === 3);
+    assert.ok(updatedQueue.length === 1);
 
-    const removeCommand = updatedQueue[2];
+    const removeCommand = updatedQueue[0];
     assert.ok(removeCommand.type === 'project_delete');
     assert.ok(removeCommand.hasOwnProperty('args'));
     assert.ok(removeCommand.args.hasOwnProperty('ids'));
@@ -111,15 +114,15 @@ describe('API projects resource', () => {
     const queue = commandQueue.getQueue();
     assert.ok(queue.length === 0);
 
-    const id = client.projects.create('Test project');
+    const id = 1;
 
     client.projects.archive(id);
 
     // Ensure the command has been queued
     const updatedQueue = commandQueue.getQueue();
-    assert.ok(updatedQueue.length === 2);
+    assert.ok(updatedQueue.length === 1);
 
-    const archiveCommand = updatedQueue[1];
+    const archiveCommand = updatedQueue[0];
     assert.ok(archiveCommand.type === 'project_archive');
     assert.ok(archiveCommand.hasOwnProperty('args'));
     assert.ok(archiveCommand.args.hasOwnProperty('ids'));
@@ -133,16 +136,16 @@ describe('API projects resource', () => {
 
     let projectIds = [];
 
-    projectIds.push(client.projects.create('First project'));
-    projectIds.push(client.projects.create('Second project'));
+    projectIds.push(1);
+    projectIds.push(2);
 
     client.projects.archive(projectIds);
 
     // Ensure the command has been queued
     const updatedQueue = commandQueue.getQueue();
-    assert.ok(updatedQueue.length === 3);
+    assert.ok(updatedQueue.length === 1);
 
-    const archiveCommand = updatedQueue[2];
+    const archiveCommand = updatedQueue[0];
     assert.ok(archiveCommand.type === 'project_archive');
     assert.ok(archiveCommand.hasOwnProperty('args'));
     assert.ok(archiveCommand.args.hasOwnProperty('ids'));
@@ -155,16 +158,15 @@ describe('API projects resource', () => {
     const queue = commandQueue.getQueue();
     assert.ok(queue.length === 0);
 
-    const id = client.projects.create('Test project');
+    const id = 1;
 
-    client.projects.archive(id);
     client.projects.unarchive(id);
 
     // Ensure the command has been queued
     const updatedQueue = commandQueue.getQueue();
-    assert.ok(updatedQueue.length === 3);
+    assert.ok(updatedQueue.length === 1);
 
-    const unarchivedCommand = updatedQueue[2];
+    const unarchivedCommand = updatedQueue[0];
     assert.ok(unarchivedCommand.type === 'project_unarchive');
     assert.ok(unarchivedCommand.hasOwnProperty('args'));
     assert.ok(unarchivedCommand.args.hasOwnProperty('ids'));
@@ -178,17 +180,16 @@ describe('API projects resource', () => {
 
     let projectIds = [];
 
-    projectIds.push(client.projects.create('First project'));
-    projectIds.push(client.projects.create('Second project'));
+    projectIds.push(1);
+    projectIds.push(2);
 
-    client.projects.archive(projectIds);
     client.projects.unarchive(projectIds);
 
     // Ensure the command has been queued
     const updatedQueue = commandQueue.getQueue();
-    assert.ok(updatedQueue.length === 4);
+    assert.ok(updatedQueue.length === 1);
 
-    const unarchivedCommand = updatedQueue[3];
+    const unarchivedCommand = updatedQueue[0];
     assert.ok(unarchivedCommand.type === 'project_unarchive');
     assert.ok(unarchivedCommand.hasOwnProperty('args'));
     assert.ok(unarchivedCommand.args.hasOwnProperty('ids'));

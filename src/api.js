@@ -19,13 +19,21 @@ const Api = (queue, params = {}) => {
   }, params);
 
   /**
-   * Added a command to the quue to be commited
+   * Added a command to the queue to be commited.
+   * A command MUST have a type, temp_id, and a uuid.
+   * A command MAY have args
    *
    * @param {Object} command The command to be queued
    *
    * @return {undefined}
    */
   const queueCommand = (command) => {
+    if (!hasValidProperty(command, 'type') ||
+        !hasValidProperty(command, 'temp_id') ||
+        !hasValidProperty(command, 'uuid')) {
+          throw new Error('A command must have a type, temp_id, and uuid.');
+        }
+
     queue.add(command);
   };
 
@@ -55,6 +63,12 @@ const Api = (queue, params = {}) => {
     );
   };
 
+  /**
+   * @param {String} url The url to POST to
+   * @param {Object} data The data to send in the POST request
+   *
+   * @return {Promise} A promise containing the result of the post request
+   */
   const post = (url, data) => {
     const params = {url: url, form: data};
 
@@ -77,16 +91,41 @@ const Api = (queue, params = {}) => {
     });
   };
 
+  /**
+   * @param {String} path The path to add to the base url
+   *
+   * @return {String} A merge between the base url and the path given
+   */
   const getUrl = (path = '') => {
     return options.baseUrl + path;
   };
 
+  /**
+   * Merges the commands with the token and sync_token stored in the object.
+   *
+   * @return {Object} An object containing the data used in the POST request
+   */
   const getCommandRequestData = () => {
     return {
       commands: JSON.stringify(queue.getQueue()),
       token: options.token,
       sync_token: options.sync_token,
     };
+  };
+
+  /**
+   * Returns true if the property exists on the object and if the property
+   * is not null and not undefined.
+   *
+   * @param {Object} obj The object to check the prop againt
+   * @param {String} property The property to check
+   *
+   * @return {Boolean} The result of the comparison.
+   */
+  const hasValidProperty = (obj, property) => {
+    return obj.hasOwnProperty(property) &&
+           obj[property] !== null &&
+           typeof obj[property] !== 'undefined';
   };
 
   return {

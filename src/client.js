@@ -2,21 +2,21 @@ import Items from './resources/items';
 import Projects from './resources/projects';
 
 /**
- * Top level interface to each of the resouces and the generic sync call
+ * Top level interface to each of the resources and the generic sync call
  *
- * @param {ApiInterface} api
- * @param {CommandCreator} commandCreator
+ * @param {Api} api
+ * @param {ResourceHelper} resourceHelper
  *
  * @return {Object} The interface of the API wrapper
  */
-const Client = (api, commandCreator) => {
+const Client = (api, resourceHelper) => {
   return {
     commit: api.commit,
     sync: api.sync,
 
     // Attach the resources
-    items: Items(api, commandCreator),
-    projects: Projects(api, commandCreator),
+    items: Items(resourceHelper),
+    projects: Projects(resourceHelper),
   };
 };
 
