@@ -20,3 +20,16 @@ Upcoming features:
 - [ ] Notes - Premium
 - [ ] Filters - Premium
 - [ ] Reminders - Premium
+
+
+# Setup
+Instead of installing any dependencies locally we'll use docker instead.
+
+To build the image run `docker build -t todoist .`
+
+Then create the container and create a volume so that changes on the host machine are also updated in docker.
+`docker run -td -P --name todoist-container -v <YOUR_PROJECT_PATH_HERE>:/todoist todoist`
+
+Then to run bash inside the container run `docker exec -it todoist-container bash`.
+
+Change directory into the `todoist` folder and run `npm i` to install the node modules.

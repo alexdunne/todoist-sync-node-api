@@ -28,6 +28,10 @@ describe('Todoist API client', () => {
   it('Has a commit property', function() {
     assert.ok(client.hasOwnProperty('commit'));
   });
+  
+  it('Has an oauth property', function() {
+    assert.ok(client.hasOwnProperty('oauth'));
+  });
 
   it('Has an items property which is an object type', function() {
     assert.ok(client.hasOwnProperty('items'));

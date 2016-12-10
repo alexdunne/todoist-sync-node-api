@@ -13,7 +13,7 @@ require('request-to-curl');
 const Api = (queue, params = {}) => {
   const options = Object.assign({
     baseUrl: 'https://todoist.com/API/v7/sync',
-    token: process.env.TODOIST_OAUTH_TOKEN,
+    token: null,
     sync_token: '*',
     resource_types: '["all"]',
   }, params);
@@ -92,6 +92,20 @@ const Api = (queue, params = {}) => {
   };
 
   /**
+   * @param {String} token
+   *
+   * @return {Promise}
+   */
+  const setAccessToken = (token) => {
+    return new Promise((resolve, reject) => {
+      options.token = token;
+      options.sync_token = ['*'];
+
+      resolve();
+    });
+  };
+
+  /**
    * @param {String} path The path to add to the base url
    *
    * @return {String} A merge between the base url and the path given
@@ -131,7 +145,9 @@ const Api = (queue, params = {}) => {
   return {
     commit: commit,
     sync: sync,
+    post: post,
     queueCommand: queueCommand,
+    setAccessToken: setAccessToken,
   };
 };
 
