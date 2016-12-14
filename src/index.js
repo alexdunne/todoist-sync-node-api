@@ -15,4 +15,4 @@ const resourceHelper = ResourceHelper(api, commandCreator);
 
 const client = Client(api, resourceHelper);
 
-export default client;
+module.exports = () => client;
