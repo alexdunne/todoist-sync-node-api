@@ -65,7 +65,8 @@ const Auth = (api, clientId, clientSecret, state) => {
         redirect_uri: redirectUri,
       })
       .then((res) => {
-        return api.setAccessToken(res.payload.access_token);
+        const payload = JSON.parse(res.payload);
+        return api.setAccessToken(payload.access_token);
       });
   };
 
