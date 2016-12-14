@@ -11,9 +11,9 @@ Each method called on a resource returns the local temp_id for that command. Thi
 Currently supported features:
 - [x] Projects
 - [x] Items
+- [x] OAuth
 
-Upcoming features:
-- [ ] OAuth - Free
+Upcoming features (The todoist user type required):
 - [ ] User - Free
 - [ ] Sharing - Free
 - [ ] Labels - Premium
